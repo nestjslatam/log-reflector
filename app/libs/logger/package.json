@@ -1,0 +1,21 @@
+{
+  "name": "@nestjslatam/logger-lib",
+  "version": "1.0.0",
+  "description": "Custom Logger library NESTJS",
+  "main": "index.js",
+  "private": false,
+  "keywords": [
+    "nestjs",
+    "logger"
+  ],
+  "author": {
+    "name": "Alberto Arroyo Raygada",
+    "email": "beyondnet.peru@gmail.com",
+    "url": "http://nestjslatam.org/"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@nestjslatam/core-lib": "^1.0.0",
+    "reflect-metadata": "^0.1.13"
+  }
+}
