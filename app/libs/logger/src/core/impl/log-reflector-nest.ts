@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 
 import {
   ON_ENTRY_TEMPLATE_AND_PARAMETERS,
@@ -9,6 +9,7 @@ import {
   ON_EXIT_TEMPLATE_WITH_TRACKINGID_AND_DURATION_AND_RESULT,
   ON_EXIT_TEMPLATE_WITH_TRACKINGID_AND_RESULT,
   ON_EXIT_TEMPLATE_WITH_RESULT,
+  LOG_REFLECTOR_SERIALIZER,
 } from '../constants';
 import { ILogReflector, IMetadata, ISerializer } from '../interfaces';
 import { Parameter, Result } from '../../models';
@@ -17,7 +18,9 @@ import { Parameter, Result } from '../../models';
 export class LogReflectorNest implements ILogReflector {
   private readonly logger = new Logger(LogReflectorNest.name);
 
-  constructor(private readonly serializer: ISerializer) {}
+  constructor(
+    @Inject(LOG_REFLECTOR_SERIALIZER) private readonly serializer: ISerializer,
+  ) {}
 
   OnEntry(
     metadata: IMetadata,

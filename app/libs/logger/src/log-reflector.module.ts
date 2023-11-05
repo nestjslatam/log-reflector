@@ -6,8 +6,10 @@ import { DynamicModule, Module, Provider } from '@nestjs/common';
 
 import {
   ILogReflectorOptions,
+  JsonSerializer,
   LOG_REFLECTOR_FACTORY,
   LOG_REFLECTOR_FACTORY_OPTIONS,
+  LOG_REFLECTOR_SERIALIZER,
   LogReflectorNest,
 } from './core';
 import { LogReflectorService } from './services';
@@ -15,15 +17,30 @@ import { LogReflectorService } from './services';
 @Module({})
 export class LogReflectorModule {
   static forRoot(options: ILogReflectorOptions): DynamicModule {
+    const service = new LogReflectorService(options);
+
     const useLogReflectorFactoryProvider = {
       provide: LOG_REFLECTOR_FACTORY,
-      useValue: new LogReflectorService(options).getLogger(),
+      useValue: service.getLogger(),
+    };
+
+    const useSerializerFactoryProvider = {
+      provide: LOG_REFLECTOR_SERIALIZER,
+      useValue: service.getSerializer(),
     };
 
     return {
       module: LogReflectorModule,
-      providers: [useLogReflectorFactoryProvider, LogReflectorNest],
-      exports: [useLogReflectorFactoryProvider, LogReflectorNest],
+      providers: [
+        useLogReflectorFactoryProvider,
+        useSerializerFactoryProvider,
+        LogReflectorNest,
+      ],
+      exports: [
+        useLogReflectorFactoryProvider,
+        useSerializerFactoryProvider,
+        LogReflectorNest,
+      ],
     };
   }
 
@@ -34,14 +51,28 @@ export class LogReflectorModule {
       inject: [LOG_REFLECTOR_FACTORY_OPTIONS],
     };
 
+    const useSerializerFactoryProvider = {
+      provide: LOG_REFLECTOR_SERIALIZER,
+      useFactory: (options) => new LogReflectorService(options).getSerializer(),
+      inject: [LOG_REFLECTOR_FACTORY_OPTIONS],
+    };
+
     return {
       module: LogReflectorModule,
       imports: options.imports,
-      exports: [useLogReflectorFactoryProvider, LogReflectorNest],
+      exports: [
+        useLogReflectorFactoryProvider,
+        useSerializerFactoryProvider,
+        LogReflectorNest,
+        JsonSerializer,
+      ],
       providers: [
         ...this.createAsyncProviders(options),
         useLogReflectorFactoryProvider,
+        useSerializerFactoryProvider,
         LogReflectorService,
+        LogReflectorNest,
+        JsonSerializer,
         ...(options.extraProviders || []),
       ],
     };
