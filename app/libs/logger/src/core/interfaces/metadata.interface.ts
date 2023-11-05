@@ -1,3 +1,7 @@
 export interface IMetadata {
-  getArguments: any[];
+  argumentos: Array<any>;
+  methodInfo: any;
+  return: any;
+  targetObject: any;
+  targetType: any;
 }

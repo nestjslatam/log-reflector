@@ -1,7 +1,7 @@
 {
-  "name": "@nestjslatam/logger-lib",
+  "name": "@nestjslatam/logreflector-lib",
   "version": "1.0.0",
-  "description": "Custom Logger library NESTJS",
+  "description": "Custom Logger library NESTJS and Reflector",
   "main": "index.js",
   "private": false,
   "keywords": [
@@ -15,7 +15,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nestjslatam/core-lib": "^1.0.0",
-    "reflect-metadata": "^0.1.13"
+    "@nestjs/config": "^3.1.1",
+    "@nestjs/typeorm": "^10.0.0",
+    "@nestjslatam/core-lib": "^1.0.2",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.3.17"
   }
 }

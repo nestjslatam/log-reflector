@@ -1,12 +1,22 @@
-import { Injectable } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
-
-import { LogMethod } from 'libs/logger/src';
+import { Injectable, UseInterceptors } from '@nestjs/common';
+import { LogReflector } from 'libs/logger/src';
 
 @Injectable()
 export class AppService {
-  @LogMethod()
-  getHello(): string {
-    return 'Hello World!';
+  serviceName: string;
+
+  message: string;
+
+  constructor() {
+    this.message = 'App Service was constructed';
+  }
+
+  @LogReflector()
+  getServiceName(): string {
+    return 'Method was called';
+  }
+
+  setServiceName(serviceName: string): void {
+    this.serviceName = serviceName;
   }
 }
