@@ -1,27 +1,19 @@
 import { Inject, Injectable } from '@nestjs/common';
-
 import {
-  ILogReflector,
   ILogReflectorOptions,
   ISerializer,
   JsonSerializer,
-  LOG_REFLECTOR_FACTORY,
-  LogReflectorNest,
+  LOG_REFLECTOR_OPTIONS,
 } from '../core';
 
 @Injectable()
-export class LogReflectorService {
+export class LogReflectorSerializerFactory {
   constructor(
-    @Inject(LOG_REFLECTOR_FACTORY)
+    @Inject(LOG_REFLECTOR_OPTIONS)
     private readonly options: ILogReflectorOptions,
   ) {}
 
-  getLogger(): ILogReflector {
-    if (this.options.extension === 'default') {
-      return new LogReflectorNest(new JsonSerializer());
-    }
-  }
-
+  //TODO: refactor factory using IoC Nest strategy
   getSerializer(): ISerializer {
     if (this.options.serializer === 'json') {
       return new JsonSerializer();

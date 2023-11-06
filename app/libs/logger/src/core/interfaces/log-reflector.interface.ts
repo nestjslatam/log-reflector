@@ -1,12 +1,8 @@
-import { Parameter, Result } from '../../models';
+import { Parameter, Result } from '../models';
 import { IMetadata } from './metadata.interface';
 
 export interface ILogReflector {
-  OnEntry(
-    metadata: IMetadata,
-    parameters: Parameter[],
-    trackingId?: string,
-  ): void;
+  OnEntry(metadata: IMetadata, args: Parameter[], trackingId?: string): void;
 
   OnException(metadata: IMetadata, ex: Error, trackingId?: string): void;
 

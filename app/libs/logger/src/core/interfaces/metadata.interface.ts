@@ -1,7 +1,7 @@
 export interface IMetadata {
-  argumentos: Array<any>;
-  methodInfo: any;
-  return: any;
-  targetObject: any;
-  targetType: any;
+  targetType: string;
+  methodInfo: string;
+  targetObject?: any;
+  result?: any;
+  args?: Array<any>;
 }

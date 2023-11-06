@@ -2,6 +2,7 @@ export * from './interfaces';
 export * from './options';
 export * from './constants';
 export * from './impl';
+export * from '../builders';
 
 import { getLogLevels } from './log-levels';
 

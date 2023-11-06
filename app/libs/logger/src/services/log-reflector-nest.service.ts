@@ -10,23 +10,19 @@ import {
   ON_EXIT_TEMPLATE_WITH_TRACKINGID_AND_RESULT,
   ON_EXIT_TEMPLATE_WITH_RESULT,
   LOG_REFLECTOR_SERIALIZER,
-} from '../constants';
-import { ILogReflector, IMetadata, ISerializer } from '../interfaces';
-import { Parameter, Result } from '../../models';
+} from '../core/constants';
+import { ILogReflector, IMetadata, ISerializer } from '../core/interfaces';
+import { Parameter, Result } from '../core/models';
 
 @Injectable()
-export class LogReflectorNest implements ILogReflector {
-  private readonly logger = new Logger(LogReflectorNest.name);
+export class LogReflectorNestService implements ILogReflector {
+  private readonly logger = new Logger(LogReflectorNestService.name);
 
   constructor(
     @Inject(LOG_REFLECTOR_SERIALIZER) private readonly serializer: ISerializer,
   ) {}
 
-  OnEntry(
-    metadata: IMetadata,
-    argumentos: Parameter[],
-    trackingId?: string,
-  ): void {
+  OnEntry(metadata: IMetadata, args?: Parameter[], trackingId?: string): void {
     let parameters = '';
 
     let template = ON_ENTRY_TEMPLATE_AND_PARAMETERS;
@@ -35,8 +31,8 @@ export class LogReflectorNest implements ILogReflector {
       template = ON_ENTRY_TEMPLATE_WITH_REQUESTID_AND_PARAMETERS;
     }
 
-    if (!argumentos || argumentos.length === 0) {
-      argumentos.forEach((arg) => {
+    if (args) {
+      args.forEach((arg) => {
         const value = this.serializer.serialize(arg.value);
 
         if (!value) {
@@ -218,7 +214,7 @@ export class LogReflectorNest implements ILogReflector {
     returnedValue?: string,
     requestId?: string,
   ): string {
-    let message = template.replace('{class}', metadata.targetType.name);
+    let message = template.replace('{class}', metadata.targetType);
     message = message.replace('{method}', metadata.methodInfo);
     message = parameters ?? message.replace('{arguments}', parameters);
     message = duration ?? message.replace('{took}', duration);

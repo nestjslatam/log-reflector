@@ -1,5 +1,5 @@
-import { LogReflectorService } from './log-reflector.service';
+import { LogReflectorNestService } from './log-reflector-nest.service';
 
-export const services = [LogReflectorService];
+export const services = [LogReflectorNestService];
 
-export { LogReflectorService };
+export { LogReflectorNestService };

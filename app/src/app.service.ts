@@ -1,5 +1,9 @@
-import { Injectable, UseInterceptors } from '@nestjs/common';
-import { LogReflector } from 'libs/logger/src';
+import { Injectable, Inject } from '@nestjs/common';
+import {
+  ILogReflector,
+  LOG_REFLECTOR_OPTIONS,
+  LogReflector,
+} from 'libs/logger/src';
 
 @Injectable()
 export class AppService {
@@ -7,13 +11,20 @@ export class AppService {
 
   message: string;
 
-  constructor() {
+  constructor(
+    @Inject(LOG_REFLECTOR_OPTIONS) private readonly logger: ILogReflector,
+  ) {
     this.message = 'App Service was constructed';
   }
 
   @LogReflector()
   getServiceName(): string {
-    return 'Method was called';
+    // this.logger.OnEntry(
+    //   { methodInfo: 'getServiceName', targetType: 'method' },
+    //   null,
+    //   'TrackingId: 445868787',
+    // );
+    return 'xxxxx';
   }
 
   setServiceName(serviceName: string): void {
