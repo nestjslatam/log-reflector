@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { ISerializer } from '../interfaces';
+
+import { ISerializer } from '../../interfaces';
 
 @Injectable()
 export class JsonSerializer implements ISerializer {

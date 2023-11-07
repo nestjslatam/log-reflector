@@ -1,13 +1,12 @@
 import { Inject } from '@nestjs/common';
 
-import { IMetadata, LOG_REFLECTOR_OPTIONS } from '../core';
-import { buildParameters } from '../services/common';
-import { Result } from '../core/models';
+import { buildParameters } from '../../services/common';
+import { Result } from '../../models';
+import { LOG_REFLECTOR_OPTIONS } from '../constants';
+import { IMetadata } from '../../interfaces';
 
 export function LogMethod() {
   const injector = Inject(LOG_REFLECTOR_OPTIONS);
-
-  const started = Date.now();
 
   return (
     target: any,

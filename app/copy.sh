@@ -1,3 +1,3 @@
-cp ./libs/ddd/package.json ./dist/libs/ddd
-cp ./libs/ddd/README.md ./dist/libs/ddd
-cp ./libs/ddd/LICENSE ./dist/libs/ddd
+cp ./libs/logger/package.json ./dist/libs/logger
+cp ./libs/logger/README.md ./dist/libs/logger
+cp ./libs/logger/LICENSE ./dist/libs/logger

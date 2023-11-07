@@ -1,4 +1,4 @@
-import { LogReflectorHttpErrorFilter } from './log-error-reflector.filter';
+import { LogReflectorHttpErrorFilter } from './log-reflector-http.filter';
 
 export const filters = [LogReflectorHttpErrorFilter];
 

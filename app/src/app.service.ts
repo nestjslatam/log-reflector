@@ -1,9 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
-import {
-  ILogReflector,
-  LOG_REFLECTOR_OPTIONS,
-  LogMethod,
-} from 'libs/logger/src';
+import { LOG_REFLECTOR_OPTIONS, LogMethod } from 'libs/logger/src';
+import { ILogReflector } from 'libs/logger/src/interfaces';
 
 @Injectable()
 export class AppService {

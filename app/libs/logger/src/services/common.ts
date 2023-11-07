@@ -1,6 +1,7 @@
-import { Parameter } from './../core/models/parameters.model';
 import { getUtcDateTimeFormatted } from '@nestjslatam/core-lib';
-import { IMetadata, ISerializer } from '../core';
+
+import { IMetadata, ISerializer } from '../interfaces';
+import { Parameter } from '../models/parameters.model';
 
 export const getDuration = (startedAt: Date): number =>
   new Date().getTime() - startedAt.getTime();

@@ -1,11 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
-import {
-  ILogReflector,
-  ILogReflectorOptions,
-  JsonSerializer,
-  LOG_REFLECTOR_OPTIONS,
-} from '../core';
-import { LogReflectorNestService } from '../services';
+
+import { LOG_REFLECTOR_OPTIONS } from '../constants';
+import { LogReflectorNestService } from '../../services';
+import { ILogReflector, ILogReflectorOptions } from '../../interfaces';
+import { JsonSerializer } from '../serializers';
 
 @Injectable()
 export class LogReflectorFactory {

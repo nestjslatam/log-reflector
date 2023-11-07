@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { LOG_REFLECTOR_SENSITIVE } from '../core';
+import { LOG_REFLECTOR_SENSITIVE } from '../constants';
 
 export const LogReflectorSensitive = (): PropertyDecorator => {
   return (target: object, propertyKey: string | symbol) => {

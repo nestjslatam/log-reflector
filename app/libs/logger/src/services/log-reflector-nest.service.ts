@@ -8,10 +8,10 @@ import {
   LOG_REFLECTOR_SERIALIZER,
   ON_EXCEPTION_TEMPLATE_TRACKING,
   ON_ENTRY_TEMPLATE_TRACKING,
-} from '../core/constants';
+} from '../impl';
 
-import { ILogReflector, IMetadata, ISerializer } from '../core/interfaces';
-import { Parameter, Result } from '../core/models';
+import { ILogReflector, IMetadata, ISerializer } from '../interfaces';
+import { Parameter, Result } from '../models';
 import { buildTemplate, getDuration, getParametersAsString } from './common';
 
 @Injectable()

@@ -7,8 +7,8 @@
   "private": false,
   "scripts": {
     "build": "nest build",
-    "build:lib": "rimraf dist && tsc -p ./libs/starter.lib/tsconfig.lib.json && sh ./copy.sh",
-    "release:lib": "cd dist/libs/starter.lib && npm publish --access public",
+    "build:lib": "rimraf dist && tsc -p ./libs/logger/tsconfig.lib.json && sh ./copy.sh",
+    "release:lib": "cd dist/libs/logger && npm publish --access public",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",

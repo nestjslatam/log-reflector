@@ -1,7 +1,7 @@
 import { DynamicModule, Module } from '@nestjs/common';
 
-import { ILogReflectorOptionsAsync } from './core/options';
-import { ILogReflectorOptions, LogReflectorBuilder } from './core';
+import { ILogReflectorOptions, ILogReflectorOptionsAsync } from './interfaces';
+import { LogReflectorBuilder } from './impl';
 
 @Module({})
 export class LogReflectorModule {
