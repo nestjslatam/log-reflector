@@ -18,13 +18,8 @@ export class AppService {
   }
 
   @LogMethod()
-  getServiceName(): string {
-    // this.logger.OnEntry(
-    //   { methodInfo: 'getServiceName', targetType: 'method' },
-    //   null,
-    //   'TrackingId: 445868787',
-    // );
-    return 'xxxxx';
+  getServiceById(id: string): string {
+    return `My Id: ${id}`;
   }
 
   setServiceName(serviceName: string): void {

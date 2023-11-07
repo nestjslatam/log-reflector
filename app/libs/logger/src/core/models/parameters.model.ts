@@ -1,10 +1,10 @@
 export class Parameter {
-  name: string;
+  index: number;
   type: string;
   value: any;
 
-  constructor(name: string, type: string, value: any) {
-    this.name = name;
+  constructor(index: number, type: string, value: any) {
+    this.index = index;
     this.type = type;
     this.value = value;
   }

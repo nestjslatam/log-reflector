@@ -6,10 +6,13 @@ import {
   ON_CALL_TEMPLATE,
   ON_EXIT_TEMPLATE,
   LOG_REFLECTOR_SERIALIZER,
+  ON_EXCEPTION_TEMPLATE_TRACKING,
+  ON_ENTRY_TEMPLATE_TRACKING,
 } from '../core/constants';
 
 import { ILogReflector, IMetadata, ISerializer } from '../core/interfaces';
 import { Parameter, Result } from '../core/models';
+import { buildTemplate, getDuration, getParametersAsString } from './common';
 
 @Injectable()
 export class LogReflectorNestService implements ILogReflector {
@@ -19,66 +22,84 @@ export class LogReflectorNestService implements ILogReflector {
     @Inject(LOG_REFLECTOR_SERIALIZER) private readonly serializer: ISerializer,
   ) {}
 
-  OnEntry(metadata: IMetadata, args?: Parameter[], trackingId?: string): void {
-    let parameters = '';
+  OnEntry(metadata: IMetadata, args?: Parameter[]): void {
+    const startedAt = new Date();
 
-    const template = ON_ENTRY_TEMPLATE;
+    let template = ON_ENTRY_TEMPLATE;
 
-    if (args && args.length > 0) {
-      args.forEach((arg) => {
-        const value = this.serializer.serialize(arg.value);
+    const returnedValue = getParametersAsString(args, this.serializer);
+    const trackingId = metadata.trackingId;
+    const duration = getDuration(startedAt);
 
-        if (!value) {
-          const s = `${arg.type} ${arg.name} = ${value}`;
-
-          parameters = `${s}, ${parameters}`;
-        }
-      });
-    } else {
-      parameters = 'None';
+    if (trackingId !== undefined) {
+      template = ON_ENTRY_TEMPLATE_TRACKING;
     }
 
-    const message = this.print(template, metadata, {
-      parameters,
+    const message = buildTemplate(template, metadata, {
+      returnedValue,
       trackingId,
+      duration,
     });
 
     this.logger.log(message);
   }
 
-  OnException(metadata: IMetadata, ex: Error, trackingId?: string): void {
-    const template = ON_EXCEPTION_TEMPLATE;
+  OnException(metadata: IMetadata, ex: Error): void {
+    const startedAt = new Date();
 
-    const message = this.print(template, metadata, {
+    let template = ON_EXCEPTION_TEMPLATE;
+
+    const trackingId = metadata.trackingId;
+    const duration = getDuration(startedAt);
+
+    if (trackingId !== undefined) {
+      template = ON_EXCEPTION_TEMPLATE_TRACKING;
+    }
+
+    const message = buildTemplate(template, metadata, {
       trackingId,
+      duration,
     });
 
-    this.logger.error(message, ex);
+    this.logger.error(message, { duration, error: JSON.stringify(ex) });
   }
 
-  OnExit(metadata: IMetadata, trackingId?: string): void {
-    const returnedValue = 'None';
+  OnExit(metadata: IMetadata): void {
+    const startedAt = new Date();
 
-    const template = ON_EXIT_TEMPLATE;
+    let template = ON_EXIT_TEMPLATE;
 
-    const message = this.print(template, metadata, {
-      returnedValue,
+    const trackingId = metadata.trackingId;
+    const duration = getDuration(startedAt);
+
+    if (trackingId !== undefined) {
+      template = ON_EXCEPTION_TEMPLATE_TRACKING;
+    }
+
+    const message = buildTemplate(template, metadata, {
       trackingId,
+      duration,
     });
 
-    this.logger.debug(message);
+    this.logger.log(message);
   }
 
-  OnCall(metadata: IMetadata, result: Result, trackingId?: string): void {
+  OnCall(metadata: IMetadata, result: Result): void {
     let returnedValue = '';
+    let template = ON_CALL_TEMPLATE;
+    const startedAt = new Date();
 
-    const template = ON_CALL_TEMPLATE;
+    const trackingId = metadata.trackingId;
+    const duration = getDuration(startedAt);
+
+    if (trackingId !== undefined) {
+      template = ON_EXCEPTION_TEMPLATE_TRACKING;
+    }
 
     const value = this.serializer.serialize(result.value);
 
     if (!value) {
       const s = `${result.type}, ${value}`;
-
       returnedValue = `${s}, ${returnedValue}`;
     }
 
@@ -86,52 +107,12 @@ export class LogReflectorNestService implements ILogReflector {
       returnedValue = 'None';
     }
 
-    const message = this.print(template, metadata, {
-      returnedValue,
+    const message = buildTemplate(template, metadata, {
       trackingId,
+      duration,
+      returnedValue,
     });
 
-    this.logger.debug(message);
-  }
-
-  private print(
-    template: string,
-    metadata: IMetadata,
-    data: {
-      result?: string;
-      parameters?: string;
-      duration?: string;
-      returnedValue?: string;
-      trackingId?: string;
-    },
-  ): string {
-    let message = '';
-
-    const { result, parameters, duration, returnedValue, trackingId } = data;
-
-    message = template.replace('{class}', metadata.targetType);
-    message = message.replace('{method}', metadata.methodInfo);
-
-    parameters && parameters !== undefined
-      ? (message = message.replace('{arguments}', parameters))
-      : (message = message.replace('{arguments}', 'None'));
-
-    duration && duration !== undefined
-      ? (message = message.replace('{took}', duration))
-      : (message = message.replace('{took}', 'None'));
-
-    returnedValue && returnedValue !== undefined
-      ? (message = message.replace('{return}', JSON.stringify(returnedValue)))
-      : (message = message.replace('{return}', 'None'));
-
-    result && result !== undefined
-      ? (message = message.replace('{result}', result))
-      : (message = message.replace('{result}', 'None'));
-
-    trackingId && trackingId !== undefined
-      ? (message = message.replace('{trackingid}', trackingId))
-      : (message = message.replace('{trackingid}', 'None'));
-
-    return message;
+    this.logger.log(message);
   }
 }
