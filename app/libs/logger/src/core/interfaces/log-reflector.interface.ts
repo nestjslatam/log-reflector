@@ -2,28 +2,31 @@ import { Parameter, Result } from '../models';
 import { IMetadata } from './metadata.interface';
 
 export interface ILogReflector {
-  OnEntry(metadata: IMetadata, args: Parameter[], trackingId?: string): void;
+  OnEntry(
+    metadata: IMetadata,
+    args?: Parameter[],
+    trackingId?: string,
+    duration?: number,
+  ): void;
 
-  OnException(metadata: IMetadata, ex: Error, trackingId?: string): void;
+  OnException(
+    metadata: IMetadata,
+    ex: Error,
+    trackingId?: string,
+    duration?: number,
+  ): void;
 
-  OnExit(metadata: IMetadata, trackingId?: string): void;
-
-  OnExitWithResult(
+  OnCall(
     metadata: IMetadata,
     result: Result,
     trackingId?: string,
+    duration?: number,
   ): void;
 
-  OnExitWithDuration(
+  OnExit(
     metadata: IMetadata,
-    duration: number,
     trackingId?: string,
-  ): void;
-
-  OnExitWithDurationAndResult(
-    metadata: IMetadata,
-    duration: number,
-    result: Result,
-    trackingId?: string,
+    result?: any,
+    duration?: number,
   ): void;
 }

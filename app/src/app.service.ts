@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@nestjs/common';
 import {
   ILogReflector,
   LOG_REFLECTOR_OPTIONS,
-  LogReflector,
+  LogMethod,
 } from 'libs/logger/src';
 
 @Injectable()
@@ -17,7 +17,7 @@ export class AppService {
     this.message = 'App Service was constructed';
   }
 
-  @LogReflector()
+  @LogMethod()
   getServiceName(): string {
     // this.logger.OnEntry(
     //   { methodInfo: 'getServiceName', targetType: 'method' },

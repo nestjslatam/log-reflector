@@ -4,19 +4,16 @@ export const LOG_REFLECTOR_SERIALIZER = 'LOG_REFLECTOR_SERIALIZER';
 export const LOG_REFLECTOR_SERIALIZER_FACTORY =
   'LOG_REFLECTOR_SERIALIZER_FACTORY';
 
-export const ON_EXCEPTION_TEMPLATE = '[{class}.cs, {method}] Exception.';
-export const ON_EXCEPTION_TEMPLATE_WITH_TRACKINGID =
-  '[{class}.cs, {method}, {trackingid}] Exception.';
-export const ON_ENTRY_TEMPLATE_AND_PARAMETERS =
-  '[{class}.cs, {method}] Start Call. Parameters: {parameters}.';
-export const ON_ENTRY_TEMPLATE_WITH_REQUESTID_AND_PARAMETERS =
+export const ON_EXCEPTION_TEMPLATE =
+  '[{class}.cs, {method}, {trackingid}] Exception: {error}.';
+
+export const ON_ENTRY_TEMPLATE =
   '[{class}.cs, {method}, {trackingid}] Start Call. Parameters: {parameters}.';
-export const ON_EXIT_TEMPLATE_WITH_DURATION_AND_RESULT =
-  '[{class}.cs, {method}] End Call. Took {took} ms. Result Value: {result}';
-export const ON_EXIT_TEMPLATE_WITH_RESULT =
-  '[{class}.cs, {method}] End Call. Result Value: {result}';
-export const ON_EXIT_TEMPLATE_WITH_TRACKINGID_AND_DURATION_AND_RESULT =
+
+export const ON_CALL_TEMPLATE =
+  '[{class}.cs, {method}, {trackingid}] Call: {call}. Parameters: {parameters}.';
+
+export const ON_EXIT_TEMPLATE =
   '[{class}.cs, {method}, {trackingid}] End Call. Took {took} ms. Result Value: {result}';
-export const ON_EXIT_TEMPLATE_WITH_TRACKINGID_AND_RESULT =
-  '[{class}.cs, {method}, {trackingid}] End Call. Result Value: {result}';
+
 export const LOG_REFLECTOR_SENSITIVE = 'LOG_REFLECTOR_SENSITIVE';

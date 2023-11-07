@@ -1,4 +1,4 @@
-import { LogReflector } from './log-reflector.decorator';
+import { LogMethod } from './log-method.decorator';
 import { LogReflectorSensitive } from './log-reflector-sensitive.decorator';
 
-export { LogReflector, LogReflectorSensitive };
+export { LogMethod, LogReflectorSensitive };
