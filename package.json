@@ -23,10 +23,10 @@
     "@apollo/server": "^4.9.5",
     "@nestjs/apollo": "^12.0.10",
     "@nestjs/common": "^10.0.0",
+    "@nestjs/config": "^3.1.1",
     "@nestjs/core": "^10.0.0",
     "@nestjs/graphql": "^12.0.10",
     "@nestjs/platform-express": "^10.0.0",
-    "@nestjslatam/logreflector-lib": "^1.0.5",
     "graphql": "^16.8.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1"

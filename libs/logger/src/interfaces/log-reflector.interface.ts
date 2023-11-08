@@ -2,7 +2,7 @@ import { Parameter, Result } from '../models';
 import { IMetadata } from './metadata.interface';
 
 export interface ILogReflector {
-  OnEntry(metadata: IMetadata, args?: Parameter[]): void;
+  OnEntry(metadata: IMetadata, parameters?: Parameter[]): void;
 
   OnException(metadata: IMetadata, ex: Error): void;
 

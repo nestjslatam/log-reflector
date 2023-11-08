@@ -1,0 +1,1 @@
+export const LOG_REFLECTOR_METHOD = Symbol('LOG_REFLECTOR:METHOD');

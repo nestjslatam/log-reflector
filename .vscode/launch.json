@@ -5,7 +5,7 @@
       "type": "node",
       "request": "launch",
       "name": "Debug Nest Framework",
-      "args": ["${workspaceFolder}/demos/graphql-demo/src/main.ts"],
+      "args": ["${workspaceFolder}/src/main.ts"],
       "runtimeArgs": [
         "--nolazy",
         "-r",

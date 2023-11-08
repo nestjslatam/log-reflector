@@ -41,10 +41,10 @@ export class LogReflectorHttpErrorFilter implements ExceptionFilter {
             methodInfo: request.method,
             targetType: request.url,
             trackingId: 'TBD',
-            result: new Result(
-              HttpStatus.INTERNAL_SERVER_ERROR.toString(),
-              exception.message,
-            ),
+            // returnedValue: new Result(
+            //   HttpStatus.INTERNAL_SERVER_ERROR.toString(),
+            //   exception.message,
+            // ),
             targetObject: exception.stack,
           },
           exception,
@@ -54,10 +54,10 @@ export class LogReflectorHttpErrorFilter implements ExceptionFilter {
             methodInfo: request.method,
             targetType: request.url,
             trackingId: 'TBD',
-            result: new Result(
-              'ExceptionFilter',
-              JSON.stringify(errorResponse),
-            ),
+            // result: new Result(
+            //   'ExceptionFilter',
+            //   JSON.stringify(errorResponse),
+            // ),
             targetObject: exception.stack,
           },
           exception,

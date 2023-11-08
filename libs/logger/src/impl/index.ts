@@ -5,3 +5,4 @@ export * from './middlewares';
 export * from './factories';
 export * from './serializers';
 export * from './constants';
+export * from './templates';
