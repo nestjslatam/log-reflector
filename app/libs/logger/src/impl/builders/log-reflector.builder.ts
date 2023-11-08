@@ -54,6 +54,7 @@ export class LogReflectorBuilder {
 
     return {
       module: LogReflectorModule,
+      global: true,
       imports: optionsAsync.imports,
       exports: [...useLogReflectorFactoryProvider],
       providers: [

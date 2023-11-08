@@ -79,7 +79,7 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^@nestjslatam/ddd(|/.*)$": "<rootDir>/libs/ddd/src/$1"
+      "^@nestjslatam/logger(|/.*)$": "<rootDir>/libs/logger/src/$1"
     }
   }
 }
