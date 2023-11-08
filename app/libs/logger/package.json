@@ -1,6 +1,6 @@
 {
   "name": "@nestjslatam/logreflector-lib",
-  "version": "1.0.1",
+  "version": "1.0.5",
   "description": "Custom Logger library NESTJS and Reflector",
   "main": "index.js",
   "private": false,

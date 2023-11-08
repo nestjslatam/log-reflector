@@ -5,7 +5,7 @@ import { Result } from '../../models';
 import { LOG_REFLECTOR_OPTIONS } from '../constants';
 import { IMetadata } from '../../interfaces';
 
-export function LogMethod() {
+export function LogGrahpqlMethod() {
   const injector = Inject(LOG_REFLECTOR_OPTIONS);
 
   return (

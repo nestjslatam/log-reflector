@@ -89,7 +89,7 @@ export class LogReflectorNestService implements ILogReflector {
     let template = ON_CALL_TEMPLATE;
     const startedAt = new Date();
 
-    const trackingId = metadata.trackingId;
+    const trackingId = metadata.trackingId ?? '';
     const duration = getDuration(startedAt);
 
     if (trackingId !== undefined) {
