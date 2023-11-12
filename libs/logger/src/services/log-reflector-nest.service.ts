@@ -9,6 +9,7 @@ import {
   ON_EXCEPTION_TEMPLATE_TRACKING,
   ON_ENTRY_TEMPLATE_TRACKING,
   ON_CALL_TEMPLATE_TRACKING,
+  ON_EXIT_TEMPLATE_TRACKING,
 } from '../impl';
 
 import { ILogReflector, IMetadata, ISerializer } from '../interfaces';
@@ -75,7 +76,7 @@ export class LogReflectorNestService implements ILogReflector {
     const duration = getDuration(startedAt);
 
     if (trackingId !== undefined) {
-      template = ON_EXCEPTION_TEMPLATE_TRACKING;
+      template = ON_EXIT_TEMPLATE_TRACKING;
     }
 
     const message = buildTemplate(template, metadata, {

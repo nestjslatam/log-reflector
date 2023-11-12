@@ -36,8 +36,6 @@ export function LogMethod(options?: ILogMethodOptions) {
 
         const called = originalMethod.apply(this, args);
 
-        console.log('called: ', called);
-
         this.logger.OnCall(metadata, new Result(metadata.methodInfo, called));
 
         return called;
