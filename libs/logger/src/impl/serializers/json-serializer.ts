@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { ISerializer } from '../../interfaces';
 
-import * as stringify from 'json-stringify-safe';
+import { ISerializer } from '../../interfaces';
 
 @Injectable()
 export class JsonSerializer implements ISerializer {
   serialize(value: any): string {
-    return stringify(value, null, 2);
+    return JSON.stringify(value);
   }
 }
