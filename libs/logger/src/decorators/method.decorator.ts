@@ -1,15 +1,12 @@
 import 'reflect-metadata';
+
 import { Inject } from '@nestjs/common';
 
-import { Result } from '../../models';
-import { LOG_REFLECTOR_OPTIONS } from '../constants';
-import { ReflectorHelper } from '../helpers';
+import { Result } from '../models';
+import { LOG_REFLECTOR_OPTIONS } from './constants';
+import { MetadataHelper } from '../helpers';
 
-interface ILogMethodOptions {
-  trackingId?: string;
-}
-
-export function LogMethod(options?: ILogMethodOptions) {
+export function LogMethod(options?: { trackingId?: string }) {
   const injector = Inject(LOG_REFLECTOR_OPTIONS);
 
   return (
@@ -19,7 +16,7 @@ export function LogMethod(options?: ILogMethodOptions) {
   ) => {
     const originalMethod = descriptor.value;
 
-    const metadata = ReflectorHelper.buildMetadata(
+    const metadata = MetadataHelper.build(
       target,
       propertyKey,
       descriptor,
@@ -30,7 +27,7 @@ export function LogMethod(options?: ILogMethodOptions) {
 
     descriptor.value = function (...args: any[]) {
       try {
-        const params = ReflectorHelper.buildParameters(metadata, args);
+        const params = MetadataHelper.getParameters(metadata, args);
 
         this.logger.OnEntry(metadata, params);
 

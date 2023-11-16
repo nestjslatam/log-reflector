@@ -1,15 +1,15 @@
 import { DynamicModule, Module } from '@nestjs/common';
 
-import { ILogReflectorOptions, ILogReflectorOptionsAsync } from './interfaces';
-import { LogReflectorBuilder } from './impl';
+import { IOptions, IOptionsAsync } from './interfaces';
+import { ReflectorBuilder } from './reflectors';
 
 @Module({})
 export class LogReflectorModule {
-  static forRoot(options: ILogReflectorOptions): DynamicModule {
-    return LogReflectorBuilder.forRoot(options);
+  static forRoot(options: IOptions): DynamicModule {
+    return ReflectorBuilder.forRoot(options);
   }
 
-  static forRootAsync(options: ILogReflectorOptionsAsync): DynamicModule {
-    return LogReflectorBuilder.forRootAsync(options);
+  static forRootAsync(options: IOptionsAsync): DynamicModule {
+    return ReflectorBuilder.forRootAsync(options);
   }
 }

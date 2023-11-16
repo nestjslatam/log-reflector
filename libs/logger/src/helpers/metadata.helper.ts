@@ -1,10 +1,10 @@
 import 'reflect-metadata';
 
-import { IMetadata } from '../../interfaces';
-import { Parameter } from '../../models';
+import { IMetadata } from '../interfaces';
+import { Parameter } from '../models';
 
-export class ReflectorHelper {
-  static buildMetadata(
+export class MetadataHelper {
+  static build(
     target: any,
     propertyKey?: symbol | string,
     descriptor?: any,
@@ -14,11 +14,12 @@ export class ReflectorHelper {
       targetType: target.constructor.name,
       methodInfo: propertyKey.toString(),
       targetObject: target,
+      descriptor,
       trackingId: options?.trackingId,
     } as IMetadata;
   }
 
-  static buildParameters(metadata: IMetadata, args: any[]): Parameter[] {
+  static getParameters(metadata: IMetadata, args: any[]): Parameter[] {
     const parameters: Parameter[] = [];
 
     const typesReflected = Reflect.getMetadata(
@@ -38,4 +39,7 @@ export class ReflectorHelper {
 
     return parameters;
   }
+
+  static getDuration = (startedAt: Date): number =>
+    new Date().getTime() - startedAt.getTime();
 }

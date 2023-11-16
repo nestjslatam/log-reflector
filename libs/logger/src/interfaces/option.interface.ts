@@ -5,20 +5,11 @@ import {
   Type,
 } from '@nestjs/common/interfaces';
 
-export enum eLogType {
-  ON_ENTRY = 'onEntry',
-  ON_EXCEPTION = 'onException',
-  ON_EXIT = 'onExit',
-  ON_EXIT_WITH_RESULT = 'onExitWithResult',
-  ON_EXIT_WITH_DURATION = 'onExitWithDuration',
-  ON_EXIT_WITH_DURATION_AND_RESULT = 'onExitWithDurationAndResult',
-}
-
-export interface ILogReflectorOptionsFactory {
+export interface IOptionsFactory {
   createOptions();
 }
 
-export interface ILogReflectorOptions {
+export interface IOptions {
   behavior: {
     isProduction: boolean;
     useTrackingId: boolean;
@@ -29,26 +20,23 @@ export interface ILogReflectorOptions {
   pathFile?: string;
 }
 
-export interface ILogReflectorOptionsAsync
-  extends Pick<ModuleMetadata, 'imports'> {
+export interface IOptionsAsync extends Pick<ModuleMetadata, 'imports'> {
   /**
    * Injection token resolving to an existing provider. The provider must implement
    * the `UseFactoryOptions` interface.
    */
-  useExisting?: Type<ILogReflectorOptionsFactory>;
+  useExisting?: Type<IOptionsFactory>;
   /**
    * Injection token resolving to a class that will be instantiated as a provider.
    * The class must implement the `UseFactoryOptions` interface.
    */
-  useClass?: Type<ILogReflectorOptionsFactory>;
+  useClass?: Type<IOptionsFactory>;
 
   /**
    * Function returning options (or a Promise resolving to options) to configure the
    * module.
    */
-  useFactory?: (
-    ...args: any[]
-  ) => Promise<ILogReflectorOptions> | ILogReflectorOptions;
+  useFactory?: (...args: any[]) => Promise<IOptions> | IOptions;
 
   /**
    * Dependencies that a Factory may inject.

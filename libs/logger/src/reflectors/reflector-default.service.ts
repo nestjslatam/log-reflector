@@ -1,24 +1,23 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 
-import {
-  ON_EXCEPTION_TEMPLATE,
-  ON_ENTRY_TEMPLATE,
-  ON_CALL_TEMPLATE,
-  ON_EXIT_TEMPLATE,
-  LOG_REFLECTOR_SERIALIZER,
-  ON_EXCEPTION_TEMPLATE_TRACKING,
-  ON_ENTRY_TEMPLATE_TRACKING,
-  ON_CALL_TEMPLATE_TRACKING,
-  ON_EXIT_TEMPLATE_TRACKING,
-} from '../impl';
-
-import { ILogReflector, IMetadata, ISerializer } from '../interfaces';
 import { Parameter, Result } from '../models';
-import { buildTemplate, getDuration } from './common';
+import { ILogReflector, IMetadata } from '../interfaces';
+import { ISerializer, LOG_REFLECTOR_SERIALIZER } from '../serializers';
+import {
+  ON_CALL_TEMPLATE,
+  ON_CALL_TEMPLATE_TRACKING,
+  ON_ENTRY_TEMPLATE,
+  ON_ENTRY_TEMPLATE_TRACKING,
+  ON_EXCEPTION_TEMPLATE,
+  ON_EXCEPTION_TEMPLATE_TRACKING,
+  ON_EXIT_TEMPLATE,
+  ON_EXIT_TEMPLATE_TRACKING,
+} from '../templates';
+import { TemplateHelper, MetadataHelper } from '../helpers';
 
 @Injectable()
-export class LogReflectorNestService implements ILogReflector {
-  private readonly logger = new Logger(LogReflectorNestService.name);
+export class LogReflectorDefault implements ILogReflector {
+  private readonly logger = new Logger(LogReflectorDefault.name);
 
   constructor(
     @Inject(LOG_REFLECTOR_SERIALIZER) private readonly serializer: ISerializer,
@@ -33,13 +32,13 @@ export class LogReflectorNestService implements ILogReflector {
 
     const trackingId = metadata.trackingId;
 
-    const duration = getDuration(startedAt);
+    const duration = MetadataHelper.getDuration(startedAt);
 
     if (trackingId !== undefined) {
       template = ON_ENTRY_TEMPLATE_TRACKING;
     }
 
-    const message = buildTemplate(template, metadata, {
+    const message = TemplateHelper.build(template, metadata, {
       params,
       duration,
     });
@@ -53,13 +52,13 @@ export class LogReflectorNestService implements ILogReflector {
     let template = ON_EXCEPTION_TEMPLATE;
 
     const trackingId = metadata.trackingId;
-    const duration = getDuration(startedAt);
+    const duration = MetadataHelper.getDuration(startedAt);
 
     if (trackingId !== undefined) {
       template = ON_EXCEPTION_TEMPLATE_TRACKING;
     }
 
-    const message = buildTemplate(template, metadata, {
+    const message = TemplateHelper.build(template, metadata, {
       duration,
       error: JSON.stringify(ex),
     });
@@ -73,13 +72,13 @@ export class LogReflectorNestService implements ILogReflector {
     let template = ON_EXIT_TEMPLATE;
 
     const trackingId = metadata.trackingId;
-    const duration = getDuration(startedAt);
+    const duration = MetadataHelper.getDuration(startedAt);
 
     if (trackingId !== undefined) {
       template = ON_EXIT_TEMPLATE_TRACKING;
     }
 
-    const message = buildTemplate(template, metadata, {
+    const message = TemplateHelper.build(template, metadata, {
       duration,
     });
 
@@ -88,11 +87,12 @@ export class LogReflectorNestService implements ILogReflector {
 
   OnCall(metadata: IMetadata, result: Result): void {
     let returnedValue = '';
+
     let template = ON_CALL_TEMPLATE;
     const startedAt = new Date();
 
     const trackingId = metadata.trackingId ?? '';
-    const duration = getDuration(startedAt);
+    const duration = MetadataHelper.getDuration(startedAt);
 
     if (trackingId !== undefined) {
       template = ON_CALL_TEMPLATE_TRACKING;
@@ -109,7 +109,7 @@ export class LogReflectorNestService implements ILogReflector {
       returnedValue = 'None';
     }
 
-    const message = buildTemplate(template, metadata, {
+    const message = TemplateHelper.build(template, metadata, {
       duration,
       returnedValue,
     });

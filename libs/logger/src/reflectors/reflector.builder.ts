@@ -1,32 +1,19 @@
 import { DynamicModule, Provider } from '@nestjs/common';
 
+import { IOptions, IOptionsAsync, IOptionsFactory } from '../interfaces';
 import {
   LOG_REFLECTOR_OPTIONS,
   LOG_REFLECTOR_OPTIONS_FACTORY,
-  LOG_REFLECTOR_SERIALIZER,
-} from '../constants';
-import { LogReflectorModule } from '../../log-reflector.module';
+} from '../decorators';
+import { ReflectorFactory } from './reflector.factory';
+import { LogReflectorModule } from '../log-reflector.module';
 
-import {
-  ILogReflectorOptions,
-  ILogReflectorOptionsAsync,
-  ILogReflectorOptionsFactory,
-} from '../../interfaces';
-import {
-  LogReflectorFactory,
-  LogReflectorSerializerFactory,
-} from '../factories';
-
-export class LogReflectorBuilder {
-  public static forRoot(options: ILogReflectorOptions): DynamicModule {
+export class ReflectorBuilder {
+  public static forRoot(options: IOptions): DynamicModule {
     const useLogReflectorFactoryProvider = [
       {
         provide: LOG_REFLECTOR_OPTIONS,
-        useValue: new LogReflectorFactory(options).getLogger(),
-      },
-      {
-        provide: LOG_REFLECTOR_SERIALIZER,
-        useValue: new LogReflectorSerializerFactory(options).getSerializer(),
+        useValue: new ReflectorFactory(options).getLogger(),
       },
     ];
 
@@ -37,17 +24,11 @@ export class LogReflectorBuilder {
     };
   }
 
-  static forRootAsync(optionsAsync: ILogReflectorOptionsAsync): DynamicModule {
+  static forRootAsync(optionsAsync: IOptionsAsync): DynamicModule {
     const useLogReflectorFactoryProvider = [
       {
         provide: LOG_REFLECTOR_OPTIONS,
-        useFactory: (options) => new LogReflectorFactory(options).getLogger(),
-        inject: [LOG_REFLECTOR_OPTIONS_FACTORY],
-      },
-      {
-        provide: LOG_REFLECTOR_SERIALIZER,
-        useFactory: (options) =>
-          new LogReflectorSerializerFactory(options).getSerializer(),
+        useFactory: (options) => new ReflectorFactory(options).getLogger(),
         inject: [LOG_REFLECTOR_OPTIONS_FACTORY],
       },
     ];
@@ -58,16 +39,14 @@ export class LogReflectorBuilder {
       imports: optionsAsync.imports,
       exports: [...useLogReflectorFactoryProvider],
       providers: [
-        ...LogReflectorBuilder.createAsyncProviders(optionsAsync),
+        ...ReflectorBuilder.createAsyncProviders(optionsAsync),
         ...useLogReflectorFactoryProvider,
         ...(optionsAsync.extraProviders || []),
       ],
     };
   }
 
-  private static createAsyncProviders(
-    optionsAsync: ILogReflectorOptionsAsync,
-  ): Provider[] {
+  private static createAsyncProviders(optionsAsync: IOptionsAsync): Provider[] {
     if (optionsAsync.useExisting || optionsAsync.useFactory) {
       return [this.createAsyncOptionsProvider(optionsAsync)];
     }
@@ -81,7 +60,7 @@ export class LogReflectorBuilder {
   }
 
   private static createAsyncOptionsProvider(
-    optionsAsync: ILogReflectorOptionsAsync,
+    optionsAsync: IOptionsAsync,
   ): Provider {
     /**
      * This is going to be a factory provider and import in the list of providers
@@ -104,7 +83,7 @@ export class LogReflectorBuilder {
      */
     return {
       provide: LOG_REFLECTOR_OPTIONS_FACTORY,
-      useFactory: async (optionsFactory: ILogReflectorOptionsFactory) =>
+      useFactory: async (optionsFactory: IOptionsFactory) =>
         optionsFactory.createOptions(),
       inject: [optionsAsync.useExisting || optionsAsync.useClass],
     };

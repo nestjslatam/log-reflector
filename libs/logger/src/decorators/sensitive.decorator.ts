@@ -1,7 +1,8 @@
 import 'reflect-metadata';
-import { LOG_REFLECTOR_SENSITIVE } from '../constants';
 
-export const LogReflectorSensitive = (): PropertyDecorator => {
+import { LOG_REFLECTOR_SENSITIVE } from './constants';
+
+export const LogSensitive = (): PropertyDecorator => {
   return (target: object, propertyKey: string | symbol) => {
     const properties =
       Reflect.getMetadata(LOG_REFLECTOR_SENSITIVE, target) || [];

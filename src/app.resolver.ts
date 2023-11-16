@@ -9,6 +9,6 @@ export class AppResolver {
     @Args('firstName') firstName: string,
     @Args('lastName') lastName: string,
   ): string {
-    return 'Hello World!' + firstName + ', ' + lastName;
+    return `Hello World! ${firstName}, ${lastName}`;
   }
 }
