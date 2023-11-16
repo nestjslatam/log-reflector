@@ -20,7 +20,7 @@ This library is currently in alpha version. Keep in mind, An alpha version of a 
 
 - Log Method: print entries (OnEntry, OnCall, OnException and OnExit) for a method tagged with @LogMethod
 
-# Integrated with Bug Loggers servers such as:
+# Pending Features, working on:
 
 - Log Property
 - Log Class
