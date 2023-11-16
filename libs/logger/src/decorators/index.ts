@@ -1,6 +1,6 @@
 import { LogMethod } from './method.decorator';
-import { LogSensitive } from './sensitive.decorator';
+import { LogSensitiveParam } from './sensitive.decorator';
 
 export * from './constants';
 
-export { LogMethod, LogSensitive };
+export { LogMethod, LogSensitiveParam };

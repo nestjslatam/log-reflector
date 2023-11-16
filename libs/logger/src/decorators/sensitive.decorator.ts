@@ -2,15 +2,21 @@ import 'reflect-metadata';
 
 import { LOG_REFLECTOR_SENSITIVE } from './constants';
 
-export const LogSensitive = (): PropertyDecorator => {
-  return (target: object, propertyKey: string | symbol) => {
-    const properties =
-      Reflect.getMetadata(LOG_REFLECTOR_SENSITIVE, target) || [];
+export const LogSensitiveParam = () => {
+  return (
+    target: object,
+    propertyKey: string | symbol,
+    parameterIndex?: number,
+  ) => {
+    const parameters =
+      Reflect.getOwnMetadata(LOG_REFLECTOR_SENSITIVE, target, propertyKey) ||
+      [];
 
     Reflect.defineMetadata(
       LOG_REFLECTOR_SENSITIVE,
-      [...properties, propertyKey],
-      target.constructor,
+      [...parameters, parameterIndex],
+      target,
+      propertyKey,
     );
   };
 };
