@@ -30,6 +30,7 @@
     "@nestjs/graphql": "^12.0.10",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjslatam/core-lib": "^1.0.4",
+    "@nestjslatam/logreflector-lib": "^1.0.7",
     "graphql": "^16.8.1",
     "json-stringify-safe": "^5.0.1",
     "reflect-metadata": "^0.1.13",
