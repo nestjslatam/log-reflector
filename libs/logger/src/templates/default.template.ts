@@ -17,7 +17,7 @@ export const ON_CALL_TEMPLATE_TRACKING =
   '{datetime} - [RequestId: {requestid}] -  [{targettype}.cs, {methodinfo}], [Tracking ID:{trackingid}]. Took {took} ms. Result: {returnedvalue}.';
 
 export const ON_EXIT_TEMPLATE =
-  '{datetime} - [RequestId: {requestid}] - [{targettype}.cs, {methodinfo}]] End Call. Took {took} ms.';
+  '{datetime} - [{targettype}.cs, {methodinfo}]] End Call. Took {took} ms.';
 
 export const ON_EXIT_TEMPLATE_TRACKING =
-  '{datetime} - [RequestId: {requestid}] -  [{targettype}.cs, {methodinfo}], [Tracking ID:{trackingid}] End Call. Took {took} ms.';
+  '{datetime} - [{targettype}.cs, {methodinfo}], [Tracking ID:{trackingid}] End Call. Took {took} ms.';

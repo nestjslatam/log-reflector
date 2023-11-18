@@ -33,21 +33,12 @@ export class LogReflectorDefault implements ILogReflector {
   }
 
   getRequestId(): string {
-    if (this.options.behavior.useContext)
-      return MetaRequestContextService.getRequestId();
-
-    throw new Error(
-      'useContext behavior is not enabled. Please enable it first.',
-    );
+    return MetaRequestContextService.getRequestId();
   }
 
   getTrackingId(): string {
-    if (this.options.behavior.useContext)
+    if (this.options.behavior.useTracking)
       return MetaRequestContextService.getTrackingId();
-
-    throw new Error(
-      'useContext behavior is not enabled. Please enable it first.',
-    );
   }
 
   OnEntry(metadata: IMetadata, parameters?: Parameter[]): void {

@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 
 import { Inject } from '@nestjs/common';
+import { v4 as uuid } from 'uuid';
 
 import { Result } from '../models';
 import { LOG_REFLECTOR_OPTIONS } from './constants';
@@ -19,8 +20,11 @@ export function LogMethod() {
     injector(target, 'logger');
 
     descriptor.value = function (...args: any[]) {
-      const trackingId = this.logger.getTrackingId();
+      let trackingId;
       const requestId = this.logger.getRequestId();
+      const options = this.logger.getOptions();
+
+      if (options.behavior.useContext) trackingId = this.logger.getTrackingId();
 
       const metadata = MetadataHelper.build(
         target,

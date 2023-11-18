@@ -33,7 +33,7 @@ const requestContextInterceptors = [
       useFactory: async (configService: ConfigService) => ({
         behavior: {
           useProduction: configService.get('NODE_ENV') === 'production',
-          useContext: true,
+          useTracking: false,
         },
         serializer: 'json',
         extension: 'default',
