@@ -3,21 +3,40 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { RequestContextModule } from 'nestjs-request-context';
 
 import { AppResolver } from './app.resolver';
 import { LogReflectorModule } from 'libs/logger/src';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import {
+  MetaContextExceptionInterceptor,
+  MetaContextInterceptor,
+} from './context';
+
+const interceptors = [
+  {
+    provide: APP_INTERCEPTOR,
+    useClass: MetaContextInterceptor,
+  },
+  {
+    provide: APP_INTERCEPTOR,
+    useClass: MetaContextExceptionInterceptor,
+  },
+];
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    RequestContextModule,
     LogReflectorModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         behavior: {
-          isProduction: configService.get('NODE_ENV') === 'production',
-          useTrackingId: true,
+          useProduction: configService.get('NODE_ENV') === 'production',
+          useTracking: true,
+          useRequestId: true,
         },
         serializer: 'json',
         extension: 'default',
@@ -33,6 +52,6 @@ import { AppService } from './app.service';
   ],
 
   controllers: [AppController],
-  providers: [AppService, AppResolver],
+  providers: [AppService, AppResolver, ...interceptors],
 })
 export class AppModule {}

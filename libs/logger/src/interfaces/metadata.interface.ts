@@ -4,4 +4,5 @@ export interface IMetadata {
   descriptor?: any;
   targetObject?: any;
   trackingId?: string;
+  requestId?: string;
 }

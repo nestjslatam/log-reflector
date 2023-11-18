@@ -9,14 +9,16 @@ export class MetadataHelper {
     target: any,
     propertyKey?: symbol | string,
     descriptor?: any,
-    options?: { trackingId?: string },
+    trackingId?: string,
+    requestId?: string,
   ): IMetadata {
     return {
       targetType: target.constructor.name,
       methodInfo: propertyKey.toString(),
       targetObject: target,
       descriptor,
-      trackingId: options?.trackingId,
+      trackingId,
+      requestId,
     } as IMetadata;
   }
 

@@ -11,8 +11,9 @@ export interface IOptionsFactory {
 
 export interface IOptions {
   behavior: {
-    isProduction: boolean;
-    useTrackingId: boolean;
+    useProduction: boolean;
+    useTracking: boolean;
+    useRequestId: boolean;
   };
   serializer: 'xml' | 'json';
   extension?: 'default';

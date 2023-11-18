@@ -20,7 +20,7 @@ export class ReflectorFactory {
       if (this.options.serializer === 'json') {
         serializer = new JsonSerializer();
       }
-      return new LogReflectorDefault(serializer);
+      return new LogReflectorDefault(serializer, this.options);
     }
   }
 }

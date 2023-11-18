@@ -3,5 +3,15 @@
 # ------------------------------------------------------
 
 type Query {
-  sayHello(firstName: String!, lastName: String!): String!
+  postWithArgs(firstName: String!, lastName: String!): String!
+  postWithOutArgs: String!
+}
+
+type Mutation {
+  postWithMutation(inputData: InputData!): String!
+}
+
+input InputData {
+  firstName: String!
+  lastName: String!
 }

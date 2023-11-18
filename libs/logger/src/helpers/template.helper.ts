@@ -23,6 +23,10 @@ export class TemplateHelper {
     message = message.replace('{targettype}', metadata.targetType);
     message = message.replace('{methodinfo}', metadata.methodInfo);
 
+    metadata.requestId && metadata.requestId !== undefined
+      ? (message = message.replace('{requestid}', metadata.requestId))
+      : (message = message.replace('{requestid}', 'None'));
+
     metadata.trackingId && metadata.trackingId !== undefined
       ? (message = message.replace('{trackingid}', metadata.trackingId))
       : (message = message.replace('{trackingid}', 'None'));

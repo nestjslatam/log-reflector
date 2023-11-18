@@ -6,7 +6,7 @@ import { Result } from '../models';
 import { LOG_REFLECTOR_OPTIONS } from './constants';
 import { MetadataHelper } from '../helpers';
 
-export function LogMethod(options?: { trackingId?: string }) {
+export function LogMethod() {
   const injector = Inject(LOG_REFLECTOR_OPTIONS);
 
   return (
@@ -16,16 +16,20 @@ export function LogMethod(options?: { trackingId?: string }) {
   ) => {
     const originalMethod = descriptor.value;
 
-    const metadata = MetadataHelper.build(
-      target,
-      propertyKey,
-      descriptor,
-      options,
-    );
-
     injector(target, 'logger');
 
     descriptor.value = function (...args: any[]) {
+      const trackingId = this.logger.getTrackingId();
+      const requestId = this.logger.getRequestId();
+
+      const metadata = MetadataHelper.build(
+        target,
+        propertyKey,
+        descriptor,
+        trackingId,
+        requestId,
+      );
+
       try {
         const params = MetadataHelper.getParameters(metadata, args);
 

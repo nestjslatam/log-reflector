@@ -1,7 +1,7 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 
 import { Parameter, Result } from '../models';
-import { ILogReflector, IMetadata } from '../interfaces';
+import { ILogReflector, IMetadata, IOptions } from '../interfaces';
 import { ISerializer, LOG_REFLECTOR_SERIALIZER } from '../serializers';
 import {
   ON_CALL_TEMPLATE,
@@ -14,6 +14,8 @@ import {
   ON_EXIT_TEMPLATE_TRACKING,
 } from '../templates';
 import { TemplateHelper, MetadataHelper } from '../helpers';
+import { MetaContextRequestService } from 'src/context';
+import { LOG_REFLECTOR_OPTIONS } from '../decorators';
 
 @Injectable()
 export class LogReflectorDefault implements ILogReflector {
@@ -21,7 +23,22 @@ export class LogReflectorDefault implements ILogReflector {
 
   constructor(
     @Inject(LOG_REFLECTOR_SERIALIZER) private readonly serializer: ISerializer,
+    @Inject(LOG_REFLECTOR_OPTIONS) private readonly options: IOptions,
   ) {}
+
+  getTrackingId(): string {
+    if (this.options.behavior.useTracking)
+      return MetaContextRequestService.getTrackingId();
+
+    throw new Error('TrackingId is not enabled. Please enable it first.');
+  }
+
+  getRequestId(): string {
+    if (this.options.behavior.useRequestId)
+      return MetaContextRequestService.getRequestId();
+
+    throw new Error('RequestId is not enabled. Please enable it first.');
+  }
 
   OnEntry(metadata: IMetadata, parameters?: Parameter[]): void {
     const startedAt = new Date();
@@ -34,7 +51,7 @@ export class LogReflectorDefault implements ILogReflector {
 
     const duration = MetadataHelper.getDuration(startedAt);
 
-    if (trackingId !== undefined) {
+    if (trackingId && trackingId !== undefined) {
       template = ON_ENTRY_TEMPLATE_TRACKING;
     }
 
@@ -54,7 +71,7 @@ export class LogReflectorDefault implements ILogReflector {
     const trackingId = metadata.trackingId;
     const duration = MetadataHelper.getDuration(startedAt);
 
-    if (trackingId !== undefined) {
+    if (trackingId && trackingId !== undefined) {
       template = ON_EXCEPTION_TEMPLATE_TRACKING;
     }
 
@@ -74,7 +91,7 @@ export class LogReflectorDefault implements ILogReflector {
     const trackingId = metadata.trackingId;
     const duration = MetadataHelper.getDuration(startedAt);
 
-    if (trackingId !== undefined) {
+    if (trackingId && trackingId !== undefined) {
       template = ON_EXIT_TEMPLATE_TRACKING;
     }
 
@@ -94,7 +111,7 @@ export class LogReflectorDefault implements ILogReflector {
     const trackingId = metadata.trackingId ?? '';
     const duration = MetadataHelper.getDuration(startedAt);
 
-    if (trackingId !== undefined) {
+    if (trackingId && trackingId !== undefined) {
       template = ON_CALL_TEMPLATE_TRACKING;
     }
 
