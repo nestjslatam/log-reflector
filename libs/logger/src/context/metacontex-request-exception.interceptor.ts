@@ -39,6 +39,7 @@ export class MetaRequestContextExceptionInterceptor implements NestInterceptor {
             Array.isArray(err?.response?.message) &&
             typeof err?.response?.error === 'string' &&
             err.status === 400;
+
           // Transforming class-validator errors to a different format
           if (isClassValidatorError) {
             this.logger.OnException(
@@ -53,22 +54,18 @@ export class MetaRequestContextExceptionInterceptor implements NestInterceptor {
                 message: 'Validation error',
                 error: err?.response?.error,
                 subErrors: err?.response?.message,
-                correlationId: MetaRequestContextService.getTrackingId(),
+                requestId: MetaRequestContextService.getRequestId(),
               }),
             );
           }
         }
 
         // Adding request ID to error message
-        if (!err.correlationId) {
-          err.correlationId = MetaRequestContextService.getTrackingId();
+        if (!err.requestId) {
+          err.requestId = MetaRequestContextService.getRequestId();
         }
 
-        if (err.response) {
-          err.response.correlationId = err.correlationId;
-        }
-
-        return throwError(err);
+        return throwError(() => err);
       }),
     );
   }
