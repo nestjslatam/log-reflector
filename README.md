@@ -62,10 +62,20 @@ export class AppController {
 **Basic configuration**
 
 ```
+const requestContextInterceptors = [
+  {
+    provide: APP_INTERCEPTOR,
+    useClass: MetaRequestContextInterceptor,
+  },
+  {
+    provide: APP_INTERCEPTOR,
+    useClass: MetaRequestContextExceptionInterceptor,
+  },
+];
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    ***
     LogReflectorModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -79,7 +89,6 @@ export class AppController {
       }),
       inject: [ConfigService],
     }),
-    ***
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       playground: false,
@@ -88,7 +97,7 @@ export class AppController {
   ],
 
   controllers: [AppController],
-  providers: [AppService, AppResolver, **...requestContextInterceptors**],
+  providers: [AppService, AppResolver, ...requestContextInterceptors],
 })
 export class AppModule {}
 ```
