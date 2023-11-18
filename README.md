@@ -58,3 +58,37 @@ export class AppController {
   }
 }
 ```
+
+**Basic configuration**
+
+```
+@Module({
+  imports: [
+    ConfigModule.forRoot(),
+    ***
+    LogReflectorModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        behavior: {
+          useProduction: configService.get('NODE_ENV') === 'production',
+          useTracking: false,
+        },
+        serializer: 'json',
+        extension: 'default',
+        output: 'console',
+      }),
+      inject: [ConfigService],
+    }),
+    ***
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      playground: false,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+    }),
+  ],
+
+  controllers: [AppController],
+  providers: [AppService, AppResolver, **...requestContextInterceptors**],
+})
+export class AppModule {}
+```
