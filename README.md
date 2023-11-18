@@ -41,3 +41,20 @@ This library is currently in alpha version. Keep in mind, An alpha version of a 
 - [ ] Print log to JSON
 - [ ] Support for New Relic
 - [ ] Support for Logstash
+
+# Sample of Use
+
+To see more samples detailed you can look inside the demo code at the main root.
+
+```
+@Controller('appcontrollers')
+export class AppController {
+  constructor(private readonly appService: AppService) {}
+
+  @Post('post-controller')
+  @LogMethod()
+  getController(): string {
+    return this.appService.print();
+  }
+}
+```
