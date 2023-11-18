@@ -27,14 +27,15 @@ This library is currently in alpha version. Keep in mind, An alpha version of a 
 
 - if TRACKING behavior is enabled we will be trying to get the tracking ID from the Body in case of HTTP requests. If the tracking ID does not exist we will be generating a new one in a GUID format.
 
-# Features Available:
+# Features Supported:
 
-- Log Method: print entries (OnEntry, OnCall, OnException and OnExit) for a method tagged with @LogMethod
-
-# Pending Features, working on:
-
-- Log Property
-- Log Class
-- Log Parameter
-- Print log to CSV, Txt, Xml file formats
-- Compatibility with clients like New Relic, Logstash, etc.
+- [x] Log method decorator
+- [ ] Log Property decorator
+- [ ] Log Class decorator
+- [ ] Log Parameter decorator
+- [ ] Print log to CSV
+- [ ] Print log to Txt
+- [ ] Print log to Xml
+- [ ] Print log to JSON
+- [ ] Support for New Relic
+- [ ] Support for Logstash
