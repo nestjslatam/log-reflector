@@ -33,6 +33,8 @@ This library is currently in alpha version. Keep in mind, An alpha version of a 
 - [ ] Log Property decorator
 - [ ] Log Class decorator
 - [ ] Log Parameter decorator
+- [ ] Print to console default NESTJS Logger
+- [ ] Print to console Winston Logger
 - [ ] Print log to CSV
 - [ ] Print log to Txt
 - [ ] Print log to Xml
