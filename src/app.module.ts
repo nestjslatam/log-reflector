@@ -14,6 +14,11 @@ import {
   MetaRequestContextInterceptor,
 } from 'libs/logger/src/context';
 
+/**
+Global interceptors are used across the whole application, for every controller and every route handler. 
+In terms of dependency injection, global interceptors registered from outside of any module (with useGlobalInterceptors(),
+as in the example above) cannot inject dependencies since this is done outside the context of any module. 
+ */
 const requestContextInterceptors = [
   {
     provide: APP_INTERCEPTOR,
@@ -33,7 +38,7 @@ const requestContextInterceptors = [
       useFactory: async (configService: ConfigService) => ({
         behavior: {
           useProduction: configService.get('NODE_ENV') === 'production',
-          useTracking: false,
+          useTracking: true,
         },
         serializer: 'json',
         extension: 'default',

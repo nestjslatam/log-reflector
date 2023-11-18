@@ -1,4 +1,3 @@
-import { APP_INTERCEPTOR } from '@nestjs/core';
 import { DynamicModule, Provider } from '@nestjs/common';
 
 import { IOptions, IOptionsAsync, IOptionsFactory } from '../interfaces';
@@ -21,7 +20,7 @@ export class ReflectorBuilder {
 
     return {
       module: LogReflectorModule,
-      imports: [...getRequestContextImports(options.behavior.useContext)],
+      imports: [...getRequestContextImports(options.behavior.useTracking)],
       providers: [...useLogReflectorFactoryProvider],
       exports: [...useLogReflectorFactoryProvider],
     };
@@ -36,15 +35,6 @@ export class ReflectorBuilder {
       },
     ];
 
-    const useRequestContextInterceptors = [
-      {
-        provide: APP_INTERCEPTOR,
-        useFactory: (options) =>
-          new ReflectorFactory(options).getContextInterceptors(),
-        inject: [LOG_REFLECTOR_OPTIONS_FACTORY],
-      },
-    ];
-
     return {
       module: LogReflectorModule,
       global: true,
@@ -53,7 +43,6 @@ export class ReflectorBuilder {
       providers: [
         ...ReflectorBuilder.createAsyncProviders(optionsAsync),
         ...useLogReflectorFactoryProvider,
-        ...useRequestContextInterceptors,
         ...(optionsAsync.extraProviders || []),
       ],
     };
