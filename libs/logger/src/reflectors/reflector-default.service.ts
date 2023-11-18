@@ -14,8 +14,8 @@ import {
   ON_EXIT_TEMPLATE_TRACKING,
 } from '../templates';
 import { TemplateHelper, MetadataHelper } from '../helpers';
-import { MetaContextRequestService } from 'src/context';
 import { LOG_REFLECTOR_OPTIONS } from '../decorators';
+import { MetaRequestContextService } from '../context';
 
 @Injectable()
 export class LogReflectorDefault implements ILogReflector {
@@ -26,18 +26,28 @@ export class LogReflectorDefault implements ILogReflector {
     @Inject(LOG_REFLECTOR_OPTIONS) private readonly options: IOptions,
   ) {}
 
-  getTrackingId(): string {
-    if (this.options.behavior.useTracking)
-      return MetaContextRequestService.getTrackingId();
+  getOptions(): IOptions {
+    if (this.options) return this.options;
 
-    throw new Error('TrackingId is not enabled. Please enable it first.');
+    throw new Error('Options were not available. Please enable it first.');
   }
 
   getRequestId(): string {
-    if (this.options.behavior.useRequestId)
-      return MetaContextRequestService.getRequestId();
+    if (this.options.behavior.useContext)
+      return MetaRequestContextService.getRequestId();
 
-    throw new Error('RequestId is not enabled. Please enable it first.');
+    throw new Error(
+      'useContext behavior is not enabled. Please enable it first.',
+    );
+  }
+
+  getTrackingId(): string {
+    if (this.options.behavior.useContext)
+      return MetaRequestContextService.getTrackingId();
+
+    throw new Error(
+      'useContext behavior is not enabled. Please enable it first.',
+    );
   }
 
   OnEntry(metadata: IMetadata, parameters?: Parameter[]): void {

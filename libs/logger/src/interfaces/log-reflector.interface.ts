@@ -1,7 +1,10 @@
 import { Parameter, Result } from '../models';
 import { IMetadata } from './metadata.interface';
+import { IOptions } from './option.interface';
 
 export interface ILogReflector {
+  getOptions(): IOptions;
+
   getTrackingId(): string;
 
   getRequestId(): string;

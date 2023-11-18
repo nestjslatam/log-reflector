@@ -8,11 +8,11 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { MetaContextRequestService } from './metacontext-request.service';
+import { MetaRequestContextService } from './metacontext-request.service';
 
-export class MetaContextExceptionInterceptor implements NestInterceptor {
+export class MetaRequestContextExceptionInterceptor implements NestInterceptor {
   private readonly logger: Logger = new Logger(
-    MetaContextExceptionInterceptor.name,
+    MetaRequestContextExceptionInterceptor.name,
   );
 
   intercept(_context: ExecutionContext, next: CallHandler): Observable<Error> {
@@ -21,7 +21,7 @@ export class MetaContextExceptionInterceptor implements NestInterceptor {
         // Logging for debugging purposes
         if (err.status >= 400 && err.status < 500) {
           this.logger.debug(
-            `[${MetaContextRequestService.getTrackingId()}] ${err.message}`,
+            `[${MetaRequestContextService.getTrackingId()}] ${err.message}`,
           );
 
           const isClassValidatorError =
@@ -35,14 +35,14 @@ export class MetaContextExceptionInterceptor implements NestInterceptor {
               message: 'Validation error',
               error: err?.response?.error,
               subErrors: err?.response?.message,
-              correlationId: MetaContextRequestService.getTrackingId(),
+              correlationId: MetaRequestContextService.getTrackingId(),
             });
           }
         }
 
         // Adding request ID to error message
         if (!err.correlationId) {
-          err.correlationId = MetaContextRequestService.getTrackingId();
+          err.correlationId = MetaRequestContextService.getTrackingId();
         }
 
         if (err.response) {

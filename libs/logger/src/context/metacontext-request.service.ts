@@ -1,13 +1,9 @@
 import { RequestContext } from 'nestjs-request-context';
+import { MetaRequestContext } from './metacontext-request.model';
 
-export class MetadataContext extends RequestContext {
-  trackingId?: string;
-  requestId: string;
-}
-
-export class MetaContextRequestService {
-  static getContext(): MetadataContext {
-    const ctx: MetadataContext = RequestContext.currentContext.req;
+export class MetaRequestContextService {
+  static getContext(): MetaRequestContext {
+    const ctx: MetaRequestContext = RequestContext.currentContext.req;
     return ctx;
   }
 

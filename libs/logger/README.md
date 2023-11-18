@@ -27,3 +27,13 @@ This library is currently in alpha version. Keep in mind, An alpha version of a 
 - Log Parameter
 - Print log to CSV, Txt, Xml file formats
 - Compatibility with clients like New Relic, Logstash, etc.
+
+# Structure
+
+- {datetime}: Date and Time in UTC Format.
+- [RequestId: {requestid}]: Each interceptor has to generate a Request ID, this id is related to a specific execution.
+- [{targettype}.cs, {methodinfo}]: Target Type is the name of the main class root. Method Info contains the name of the method executed.
+- [Tracking ID:{trackingid}]: This is a specific mark or tag delivered by the client to define segments of data. In case we do not give this value, the system will create internally a new one based on GUIDs strategy.
+- {took}: Time in milliseconds that delay to execute the code.
+- {returnedvalue}: Show the value returned after executing the logic inside the method.
+- {params}: List arguments used inside the method.

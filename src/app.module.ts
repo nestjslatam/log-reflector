@@ -1,42 +1,39 @@
+import { APP_INTERCEPTOR } from '@nestjs/core';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { RequestContextModule } from 'nestjs-request-context';
 
 import { AppResolver } from './app.resolver';
 import { LogReflectorModule } from 'libs/logger/src';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { APP_INTERCEPTOR } from '@nestjs/core';
 import {
-  MetaContextExceptionInterceptor,
-  MetaContextInterceptor,
-} from './context';
+  MetaRequestContextExceptionInterceptor,
+  MetaRequestContextInterceptor,
+} from 'libs/logger/src/context';
 
-const interceptors = [
+const requestContextInterceptors = [
   {
     provide: APP_INTERCEPTOR,
-    useClass: MetaContextInterceptor,
+    useClass: MetaRequestContextInterceptor,
   },
   {
     provide: APP_INTERCEPTOR,
-    useClass: MetaContextExceptionInterceptor,
+    useClass: MetaRequestContextExceptionInterceptor,
   },
 ];
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    RequestContextModule,
     LogReflectorModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         behavior: {
           useProduction: configService.get('NODE_ENV') === 'production',
-          useTracking: true,
-          useRequestId: true,
+          useContext: true,
         },
         serializer: 'json',
         extension: 'default',
@@ -52,6 +49,6 @@ const interceptors = [
   ],
 
   controllers: [AppController],
-  providers: [AppService, AppResolver, ...interceptors],
+  providers: [AppService, AppResolver, ...requestContextInterceptors],
 })
 export class AppModule {}
