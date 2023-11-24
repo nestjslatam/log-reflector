@@ -12,12 +12,13 @@ export interface IOptionsFactory {
 export interface IOptions {
   behavior: {
     useProduction: boolean;
-    useTracking: boolean;
   };
-  serializer: 'xml' | 'json';
-  extension?: 'default';
-  output?: 'console' | 'file';
-  pathFile?: string;
+  configuration: {
+    serializer: 'xml' | 'json';
+    extension?: 'default';
+    output?: 'console' | 'file';
+    pathFile?: string;
+  };
 }
 
 export interface IOptionsAsync extends Pick<ModuleMetadata, 'imports'> {

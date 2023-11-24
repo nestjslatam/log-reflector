@@ -15,7 +15,6 @@ import {
 } from '../templates';
 import { TemplateHelper, MetadataHelper } from '../helpers';
 import { LOG_REFLECTOR_OPTIONS } from '../decorators';
-import { MetaRequestContextService } from '../context';
 
 @Injectable()
 export class LogReflectorDefault implements ILogReflector {
@@ -30,15 +29,6 @@ export class LogReflectorDefault implements ILogReflector {
     if (this.options) return this.options;
 
     throw new Error('Options were not available. Please enable it first.');
-  }
-
-  getRequestId(): string {
-    return MetaRequestContextService.getRequestId();
-  }
-
-  getTrackingId(): string {
-    if (this.options.behavior.useTracking)
-      return MetaRequestContextService.getTrackingId();
   }
 
   OnEntry(metadata: IMetadata, parameters?: Parameter[]): void {

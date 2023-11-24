@@ -16,8 +16,8 @@ export class ReflectorFactory {
   getLogger(): ILogReflector {
     let serializer: ISerializer = null;
 
-    if (this.options.extension === 'default') {
-      if (this.options.serializer === 'json') {
+    if (this.options.configuration.extension === 'default') {
+      if (this.options.configuration.serializer === 'json') {
         serializer = new JsonSerializer();
       }
       return new LogReflectorDefault(serializer, this.options);

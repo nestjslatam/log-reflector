@@ -7,7 +7,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Post('post-controller')
-  @LogMethod()
+  @LogMethod({ trackingId: 'trackingId', requestId: 'requestId' })
   getController(): string {
     return this.appService.print();
   }

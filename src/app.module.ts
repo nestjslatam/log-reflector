@@ -9,26 +9,6 @@ import { AppResolver } from './app.resolver';
 import { LogReflectorModule } from 'libs/logger/src';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import {
-  MetaRequestContextExceptionInterceptor,
-  MetaRequestContextInterceptor,
-} from 'libs/logger/src/context';
-
-/**
-Global interceptors are used across the whole application, for every controller and every route handler. 
-In terms of dependency injection, global interceptors registered from outside of any module (with useGlobalInterceptors(),
-as in the example above) cannot inject dependencies since this is done outside the context of any module. 
- */
-const requestContextInterceptors = [
-  {
-    provide: APP_INTERCEPTOR,
-    useClass: MetaRequestContextInterceptor,
-  },
-  {
-    provide: APP_INTERCEPTOR,
-    useClass: MetaRequestContextExceptionInterceptor,
-  },
-];
 
 @Module({
   imports: [
@@ -38,11 +18,13 @@ const requestContextInterceptors = [
       useFactory: async (configService: ConfigService) => ({
         behavior: {
           useProduction: configService.get('NODE_ENV') === 'production',
-          useTracking: true,
         },
-        serializer: 'json',
-        extension: 'default',
-        output: 'console',
+        configuration: {
+          serializer: 'json',
+          extension: 'default',
+          output: 'console',
+          pathFile: 'logs',
+        },
       }),
       inject: [ConfigService],
     }),
@@ -54,6 +36,6 @@ const requestContextInterceptors = [
   ],
 
   controllers: [AppController],
-  providers: [AppService, AppResolver, ...requestContextInterceptors],
+  providers: [AppService, AppResolver],
 })
 export class AppModule {}

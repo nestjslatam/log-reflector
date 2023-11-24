@@ -9,7 +9,7 @@ export class AppResolver {
   constructor(private readonly appService: AppService) {}
 
   @Query(() => String)
-  @LogMethod()
+  @LogMethod({ trackingId: 'trackingId', requestId: 'requestId' })
   postWithArgs(
     @Args('firstName')
     @LogSensitiveParam()
@@ -20,13 +20,13 @@ export class AppResolver {
   }
 
   @Query(() => String)
-  @LogMethod()
+  @LogMethod({ trackingId: 'trackingId', requestId: 'requestId' })
   postWithOutArgs(): string {
     return `Hello World! without Arguments`;
   }
 
   @Mutation(() => String)
-  @LogMethod()
+  @LogMethod({ trackingId: 'trackingId', requestId: 'requestId' })
   postWithMutation(@Args('inputData') inputData: InputData): string {
     const { firstName, lastName } = inputData;
     this.appService.print();

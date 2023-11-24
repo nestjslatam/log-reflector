@@ -20,7 +20,6 @@ export class ReflectorBuilder {
 
     return {
       module: LogReflectorModule,
-      imports: [...getRequestContextImports(options.behavior.useTracking)],
       providers: [...useLogReflectorFactoryProvider],
       exports: [...useLogReflectorFactoryProvider],
     };
@@ -91,7 +90,3 @@ export class ReflectorBuilder {
     };
   }
 }
-
-const getRequestContextImports = (useContext: boolean) => {
-  return useContext ? [RequestContextModule] : [];
-};

@@ -6,7 +6,12 @@ import { Result } from '../models';
 import { LOG_REFLECTOR_OPTIONS } from './constants';
 import { MetadataHelper } from '../helpers';
 
-export function LogMethod() {
+interface ILogMethodProps {
+  trackingId?: string;
+  requestId?: string;
+}
+
+export function LogMethod(props: ILogMethodProps) {
   const injector = Inject(LOG_REFLECTOR_OPTIONS);
 
   return (
@@ -18,14 +23,9 @@ export function LogMethod() {
 
     injector(target, 'logger');
 
+    const { trackingId, requestId } = props;
+
     descriptor.value = function (...args: any[]) {
-      let trackingId;
-      const requestId = this.logger.getRequestId();
-      const options = this.logger.getOptions();
-
-      if (options.behavior.useTracking)
-        trackingId = this.logger.getTrackingId();
-
       const metadata = MetadataHelper.build(
         target,
         propertyKey,

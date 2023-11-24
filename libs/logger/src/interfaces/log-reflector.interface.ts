@@ -5,10 +5,6 @@ import { IOptions } from './option.interface';
 export interface ILogReflector {
   getOptions(): IOptions;
 
-  getTrackingId(): string;
-
-  getRequestId(): string;
-
   OnEntry(metadata: IMetadata, parameters?: Parameter[]): void;
 
   OnException(metadata: IMetadata, ex: Error): void;
